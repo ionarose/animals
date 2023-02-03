@@ -1,7 +1,7 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
-import CameraIcon from "@mui/icons-material/PhotoCamera";
+import SetMealTwoToneIcon from "@mui/icons-material/SetMealTwoTone";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -14,8 +14,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
+import Modal from "@mui/material/Modal";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
+import { styled, alpha } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
 
 function Copyright() {
   return (
@@ -30,8 +35,87 @@ function Copyright() {
   );
 }
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+function PopUp(){
+return (
+                      <Modal
+                        open={open}
+                        onClose={() => setOpen(false)}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                      >
+                        <Box sx={style}>
+                          <Typography
+                            id="modal-modal-title"
+                            variant="h6"
+                            component="h2"
+                          >
+                            {card["Species Name"]}
+                          </Typography>
+                          {/* {JSON.parse(card.Biology)} */}
 
+                          <Button
+                            variant="contained"
+                            onClick={() => setOpen(false)}
+                          >
+                            Close
+                          </Button>
+                        </Box>
+                      </Modal>)
+
+}
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
+  },
+}));
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 const theme = createTheme();
 
 export default function Album() {
@@ -42,22 +126,48 @@ export default function Album() {
       const response = await fetch(`https://www.fishwatch.gov/api/species`);
       const data = await response.json();
       setFish(data);
-      console.log(data[1]["Image Gallery"][0].src);
+      console.log(data[1]);
     }
     fetchData();
   }, []);
 
+  const [open, setOpen] = useState(false);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <CameraIcon sx={{ mr: 2 }} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Rent a Beast
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+            >
+              <SetMealTwoToneIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            >
+              Rent a fish
+            </Typography>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+          </Toolbar>
+        </AppBar>
+      </Box>
       <main>
         {/* Hero unit */}
         <Box
@@ -75,7 +185,7 @@ export default function Album() {
               color="text.primary"
               gutterBottom
             >
-              Album layout
+              Rent a fish
             </Typography>
             <Typography
               variant="h5"
@@ -83,7 +193,7 @@ export default function Album() {
               color="text.secondary"
               paragraph
             >
-              Rent a beastie, big or small. Big event? Rent 'em all!
+              Rent a fish, big or small. Big event? Rent 'em all!
             </Typography>
             <Stack
               sx={{ pt: 4 }}
@@ -130,8 +240,10 @@ export default function Album() {
                       <Typography>{card["Scientific Name"]}</Typography>
                     </CardContent>
                     <CardActions>
-                      <Button size="small">View</Button>
-                      <Button size="small">Edit</Button>
+                      <Button onClick={() => setOpen(true)}>Info</Button>
+
+
+                      <Button size="small">Rent</Button>
                     </CardActions>
                   </Card>
                 </Grid>
