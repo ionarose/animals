@@ -14,55 +14,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
-import Modal from "@mui/material/Modal";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import  AlertDialogSlide  from "../components/Popup";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
-function PopUp(){
-return (
-                      <Modal
-                        open={open}
-                        onClose={() => setOpen(false)}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                      >
-                        <Box sx={style}>
-                          <Typography
-                            id="modal-modal-title"
-                            variant="h6"
-                            component="h2"
-                          >
-                            {card["Species Name"]}
-                          </Typography>
-                          {/* {JSON.parse(card.Biology)} */}
-
-                          <Button
-                            variant="contained"
-                            onClick={() => setOpen(false)}
-                          >
-                            Close
-                          </Button>
-                        </Box>
-                      </Modal>)
-
-}
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -105,17 +65,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 const theme = createTheme();
 
 export default function Album() {
@@ -131,7 +80,6 @@ export default function Album() {
     fetchData();
   }, []);
 
-  const [open, setOpen] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
@@ -178,32 +126,16 @@ export default function Album() {
           }}
         >
           <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="text.primary"
-              gutterBottom
-            >
-              Rent a fish
-            </Typography>
+           
             <Typography
               variant="h5"
               align="center"
               color="text.secondary"
               paragraph
             >
-              Rent a fish, big or small. Big event? Rent 'em all!
+              Rent a fish, large or small. Big event? Rent 'em all!
             </Typography>
-            <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
-            >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
-            </Stack>
+          
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
@@ -219,6 +151,7 @@ export default function Album() {
               return (
                 <Grid item key={card} xs={12} sm={6} md={4}>
                   <Card
+                  key={card["Species Name"]}
                     sx={{
                       height: "100%",
                       display: "flex",
@@ -240,10 +173,17 @@ export default function Album() {
                       <Typography>{card["Scientific Name"]}</Typography>
                     </CardContent>
                     <CardActions>
-                      <Button onClick={() => setOpen(true)}>Info</Button>
+                    <AlertDialogSlide 
+                    name={card["Species Name"]}
+                    desc={card["Physical Description"]}
+                    images={card["Image Gallery"]}
+                    Habitat={card.Habitat}
+                    biology={card.Biology}
+                    illustration={card["Species Illustration Photo"].src}
+                    cost={card.Calories}
+                    />
 
-
-                      <Button size="small">Rent</Button>
+                      <Button size="small">£{card.Calories} per week</Button>
                     </CardActions>
                   </Card>
                 </Grid>
@@ -255,7 +195,7 @@ export default function Album() {
       {/* Footer */}
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
-          Footer
+          Rent a Fish
         </Typography>
         <Typography
           variant="subtitle1"
@@ -265,9 +205,18 @@ export default function Album() {
         >
           Created by Iona Rose with Next.js and Material UI
         </Typography>
-        <Copyright />
       </Box>
       {/* End footer */}
     </ThemeProvider>
   );
 }
+
+
+// import * as React from 'react';
+// import Button from '@mui/material/Button';
+// import Dialog from '@mui/material/Dialog';
+// import DialogActions from '@mui/material/DialogActions';
+// import DialogContent from '@mui/material/DialogContent';
+// import DialogContentText from '@mui/material/DialogContentText';
+// import DialogTitle from '@mui/material/DialogTitle';
+// import Slide from '@mui/material/Slide';
