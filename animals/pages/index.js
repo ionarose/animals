@@ -80,6 +80,29 @@ export default function Album() {
     fetchData();
   }, []);
 
+  const [searchTerm, setSearchTerm] = useState("")
+
+  function format(input) {
+    return input.toLowerCase().replace(/\s+/g, '-');
+  }
+
+async function searchBySpecies(search){
+  const response = await fetch(`https://www.fishwatch.gov/api/species/${format(search)}`);
+  const data = await response.json();
+  setFish(data);
+  console.log(data)
+  console.log(search)
+  console.log("search called")
+
+  
+}
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  searchBySpecies(searchTerm);
+  console.log("handle submit called")
+};
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -104,15 +127,19 @@ export default function Album() {
             >
               Rent a fish
             </Typography>
+            <form  onSubmit={handleSubmit}>
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
-                placeholder="Search…"
+                placeholder="Search by species"
                 inputProps={{ "aria-label": "search" }}
+                onChange={e => setSearchTerm(e.target.value)}
+                 value={searchTerm}
               />
             </Search>
+            </form>
           </Toolbar>
         </AppBar>
       </Box>
