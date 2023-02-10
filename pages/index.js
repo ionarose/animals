@@ -155,7 +155,7 @@ const handleSubmit = (event) => {
               color="text.secondary"
               paragraph
             >
-              Rent a fish, large or small. Big event? Rent 'em all!
+              Rent a fish, large or small. Big event? Rent &apos;em all!
             </Typography>
           
           </Container>
