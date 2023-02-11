@@ -12,6 +12,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+
+
+
 export default function AlertDialogSlide(props) {
   const [open, setOpen] = React.useState(false);
 
@@ -56,12 +59,12 @@ export default function AlertDialogSlide(props) {
             <h4>Biology:</h4>
             <div style={{ "padding-left": "30px" }} dangerouslySetInnerHTML={bio} />
             <h4>Habitat:</h4>
-           <div style={{ "padding-left": "30px" }}  dangerouslySetInnerHTML={hab} /> 
+           { !hab < 1 ? (<div><p>  No info available.</p></div>):(<div style={{ "padding-left": "30px" }}  dangerouslySetInnerHTML={hab} /> )}
           </DialogContentText>
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button variant="outlined" onClick={handleClose}>Close</Button>
           
         </DialogActions>
       </Dialog>

@@ -8,20 +8,18 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import  AlertDialogSlide  from "../components/Popup";
-
+import AlertDialogSlide from "../components/Popup";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -75,29 +73,28 @@ export default function Album() {
       const response = await fetch(`https://www.fishwatch.gov/api/species`);
       const data = await response.json();
       setFish(data);
-      
     }
     fetchData();
   }, []);
 
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
 
   function format(input) {
-    return input.toLowerCase().replace(/\s+/g, '-');
+    return input.toLowerCase().replace(/\s+/g, "-");
   }
 
-async function searchBySpecies(search){
-  const response = await fetch(`https://www.fishwatch.gov/api/species/${format(search)}`);
-  const data = await response.json();
-  setFish(data);
-}
+  async function searchBySpecies(search) {
+    const response = await fetch(
+      `https://www.fishwatch.gov/api/species/${format(search)}`
+    );
+    const data = await response.json();
+    setFish(data);
+  }
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  searchBySpecies(searchTerm);
-
-};
-
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    searchBySpecies(searchTerm);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -122,18 +119,18 @@ const handleSubmit = (event) => {
             >
               Rent a fish
             </Typography>
-            <form  onSubmit={handleSubmit}>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search by species"
-                inputProps={{ "aria-label": "search" }}
-                onChange={e => setSearchTerm(e.target.value)}
-                 value={searchTerm}
-              />
-            </Search>
+            <form onSubmit={handleSubmit}>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search by species"
+                  inputProps={{ "aria-label": "search" }}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchTerm}
+                />
+              </Search>
             </form>
           </Toolbar>
         </AppBar>
@@ -148,7 +145,6 @@ const handleSubmit = (event) => {
           }}
         >
           <Container maxWidth="sm">
-           
             <Typography
               variant="h5"
               align="center"
@@ -157,7 +153,6 @@ const handleSubmit = (event) => {
             >
               Rent a fish, large or small. Big event? Rent &apos;em all!
             </Typography>
-          
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
@@ -173,7 +168,7 @@ const handleSubmit = (event) => {
               return (
                 <Grid item key={card} xs={12} sm={6} md={4}>
                   <Card
-                  key={card["Species Name"]}
+                    key={card["Species Name"]}
                     sx={{
                       height: "100%",
                       display: "flex",
@@ -193,19 +188,36 @@ const handleSubmit = (event) => {
                         {card["Species Name"]}
                       </Typography>
                       <Typography>{card["Scientific Name"]}</Typography>
+                      <Typography
+                        sx={{
+                          float: "right",
+                          color: "grey",
+                          size: "small",
+                        }}
+                      >
+                        £{card.Calories}/week
+                      </Typography>
                     </CardContent>
                     <CardActions>
-                    <AlertDialogSlide 
-                    name={card["Species Name"]}
-                    desc={card["Physical Description"]}
-                    images={card["Image Gallery"]}
-                    Habitat={card.Habitat}
-                    biology={card.Biology}
-                    illustration={card["Species Illustration Photo"].src}
-                    cost={card.Calories}
-                    />
+                      <AlertDialogSlide
+                        name={card["Species Name"]}
+                        desc={card["Physical Description"]}
+                        images={card["Image Gallery"]}
+                        Habitat={card.Habitat}
+                        biology={card.Biology}
+                        illustration={card["Species Illustration Photo"].src}
+                        cost={card.Calories}
+                      />
 
-                      <Button size="small">£{card.Calories} per week</Button>
+                      <Button
+                        variant="contained"
+                        endIcon={<AddShoppingCartIcon />}
+                        sx={{
+                          "margin-left": "15px"
+                        }}
+                      >
+                        Add to Cart
+                      </Button>
                     </CardActions>
                   </Card>
                 </Grid>
@@ -232,7 +244,6 @@ const handleSubmit = (event) => {
     </ThemeProvider>
   );
 }
-
 
 // import * as React from 'react';
 // import Button from '@mui/material/Button';
