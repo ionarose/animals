@@ -213,7 +213,7 @@ export default function Album() {
                         variant="contained"
                         endIcon={<AddShoppingCartIcon />}
                         sx={{
-                          "margin-left": "15px"
+                          "margin-left": "25px"
                         }}
                       >
                         Add to Cart
