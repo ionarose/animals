@@ -2,16 +2,16 @@ import React from "react";
 
 const Cart = ({ bgimage, count }) => {
   return (
-    <div className="cart-card">
+    <div  >
       <h3>Cart</h3>
       <hr />
       <div>
         {count > 0 ? (
-          <div className="ctcheck">
-            <div className="ctinfo-flex">
-              {bgimage.map(({ image, id }) => (
+          <div >
+            <div >
+              {/* {bgimage.map(({ image, id }) => (
                 <img src={image} key={id} alt="bg-img" />
-              ))}
+              ))} */}
               <div>
                 <p>Fall Limited Edition Sneakers</p>
                 <p>
@@ -22,7 +22,7 @@ const Cart = ({ bgimage, count }) => {
             <button> Checkout</button>
           </div>
         ) : (
-          <p className="p-empty">Your cart is empty</p>
+          <p >Your cart is empty</p>
         )}
       </div>
     </div>

@@ -17,9 +17,16 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
+import Rating from "@mui/material/Rating";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import AlertDialogSlide from "../components/Popup";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Model from "../components/Model.js";
+import DrawerMenu from "@/components/DrawerMenu";
+import Cart from "../components/Cart.js";
+import { RemoveRounded } from "@mui/icons-material";
+import { AddRounded } from "@mui/icons-material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -66,7 +73,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const theme = createTheme();
 
 export default function Album() {
+  const [cart, setCart] = useState(false);
+  // const [bgimage, setBgimage] = useState(FirstProductImage);
+  const [count, setCount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [draw, setDraw] = useState(false);
+  const handleOpen = () => setOpen(true);
   const [fish, setFish] = useState([]);
+
+  const Displaycart = () => {
+    setCart((prev) => !prev);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -94,6 +111,17 @@ export default function Album() {
   const handleSubmit = (event) => {
     event.preventDefault();
     searchBySpecies(searchTerm);
+  };
+
+  const countIncrease = () => {
+    setCount((prevValue) => prevValue + 1);
+  };
+  const countDecrease = () => {
+    if (count === 0) {
+      setCount(0);
+    } else {
+      setCount((prevValue) => prevValue - 1);
+    }
   };
 
   return (
@@ -132,10 +160,29 @@ export default function Album() {
                 />
               </Search>
             </form>
+            <div>
+              <Button
+                variant="contained"
+                endIcon={<ShoppingCartIcon />}
+                alt="cart"
+                className="cart"
+                sx={{
+                  "margin-left": "25px",
+                }}
+                onClick={Displaycart}
+              >
+                Cart
+              </Button>
+              <div className="avater-cart"></div>
+            </div>{" "}
           </Toolbar>
         </AppBar>
+        {cart && <Cart count={count} />}
       </Box>
+
       <main>
+        {/* <Model open={open} setOpen={(word) => setOpen(word)} /> */}
+        <DrawerMenu draw={draw} setDraw={(word) => setDraw(word)} />
         {/* Hero unit */}
         <Box
           sx={{
@@ -187,7 +234,12 @@ export default function Album() {
                       <Typography gutterBottom variant="h5" component="h2">
                         {card["Species Name"]}
                       </Typography>
-                      <Typography>{card["Scientific Name"]}</Typography>
+                      <Rating
+                        size="small"
+                        name="read-only"
+                        value={5}
+                        readOnly
+                      />
                       <Typography
                         sx={{
                           float: "right",
@@ -197,6 +249,7 @@ export default function Album() {
                       >
                         £{card.Calories}/week
                       </Typography>
+                      <Typography>{card["Scientific Name"]}</Typography>
                     </CardContent>
                     <CardActions>
                       <AlertDialogSlide
@@ -209,15 +262,24 @@ export default function Album() {
                         cost={card.Calories}
                       />
 
-                      <Button
+                      {/* <Button
                         variant="contained"
                         endIcon={<AddShoppingCartIcon />}
                         sx={{
-                          "margin-left": "25px"
+                          "margin-left": "25px",
                         }}
                       >
                         Add to Cart
-                      </Button>
+                      </Button> */}
+                      <div className="cart">
+                        <Button
+                          variant="contained"
+                          endIcon={<AddShoppingCartIcon />}
+                          onClick={Displaycart}
+                        >
+                          Add to cart
+                        </Button>
+                      </div>
                     </CardActions>
                   </Card>
                 </Grid>
@@ -244,12 +306,3 @@ export default function Album() {
     </ThemeProvider>
   );
 }
-
-// import * as React from 'react';
-// import Button from '@mui/material/Button';
-// import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-// import DialogTitle from '@mui/material/DialogTitle';
-// import Slide from '@mui/material/Slide';

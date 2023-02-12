@@ -3,7 +3,7 @@ import { NavigateBefore } from "@mui/icons-material";
 import { Close } from "@mui/icons-material";
 import { Fade, Box, Modal, Backdrop } from "@mui/material";
 import React, { useState } from "react";
-import { ProductImage } from "./data";
+// import { ProductImage } from "./data";
 const Model = ({ open, setOpen }) => {
   const handleClose = () => setOpen(false);
   const [index, setIndex] = useState(0);
