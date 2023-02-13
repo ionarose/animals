@@ -73,18 +73,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const theme = createTheme();
 
 export default function Album() {
-  const [cart, setCart] = useState(false);
-  // const [bgimage, setBgimage] = useState(FirstProductImage);
-  const [count, setCount] = useState(0);
-  const [open, setOpen] = useState(false);
+
+  
   const [draw, setDraw] = useState(false);
-  const handleOpen = () => setOpen(true);
+ 
   const [fish, setFish] = useState([]);
   const [alert, setAlert] = useState(false)
 
-  const Displaycart = () => {
-    setCart((prev) => !prev);
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -116,11 +111,21 @@ export default function Album() {
 
 
 
-function basketAlert(){
-  setAlert(true)
-  setTimeout(() => {
-    setAlert(false)
-  }, "2000")
+const [basket, setBasket] = useState([])
+
+function addToBasket(name, cost, image){
+let item = {
+  name: name,
+  cost: cost,
+  image: image
+}
+setBasket(prevBasket => {
+  if (prevBasket && prevBasket.length > 0) {
+    return [...prevBasket, item];
+  } else {
+    return [item];
+  }
+});
 }
 
   return (
@@ -162,7 +167,7 @@ function basketAlert(){
             </form>
             <div>
               
-              <Cart/>
+              <Cart basket={basket}/>
              
               <div className="avater-cart"></div>
             </div>{" "}
@@ -261,7 +266,7 @@ function basketAlert(){
                         }}
                           variant="contained"
                           endIcon={<AddShoppingCartIcon />}
-                          onClick={()=>{Displaycart;   setAlert(true)
+                          onClick={()=>{addToBasket(card["Species Name"],card.Calories,card["Species Illustration Photo"].src);   setAlert(true)
                             setTimeout(() => {
                               setAlert(false)
                             }, "2000")
