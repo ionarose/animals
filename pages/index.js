@@ -22,7 +22,7 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import AlertDialogSlide from "../components/Popup";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Model from "../components/Model.js";
+import Alert from "@mui/material/Alert";
 import DrawerMenu from "@/components/DrawerMenu";
 import Cart from "../components/Cart.js";
 import { RemoveRounded } from "@mui/icons-material";
@@ -80,6 +80,7 @@ export default function Album() {
   const [draw, setDraw] = useState(false);
   const handleOpen = () => setOpen(true);
   const [fish, setFish] = useState([]);
+  const [alert, setAlert] = useState(false)
 
   const Displaycart = () => {
     setCart((prev) => !prev);
@@ -113,22 +114,21 @@ export default function Album() {
     searchBySpecies(searchTerm);
   };
 
-  const countIncrease = () => {
-    setCount((prevValue) => prevValue + 1);
-  };
-  const countDecrease = () => {
-    if (count === 0) {
-      setCount(0);
-    } else {
-      setCount((prevValue) => prevValue - 1);
-    }
-  };
+
+
+function basketAlert(){
+  setAlert(true)
+  setTimeout(() => {
+    setAlert(false)
+  }, "2000")
+}
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
             <IconButton
               size="large"
@@ -161,25 +161,17 @@ export default function Album() {
               </Search>
             </form>
             <div>
-              <Button
-                variant="contained"
-                endIcon={<ShoppingCartIcon />}
-                alt="cart"
-                className="cart"
-                sx={{
-                  "margin-left": "25px",
-                }}
-                onClick={Displaycart}
-              >
-                Cart
-              </Button>
+              
+              <Cart/>
+             
               <div className="avater-cart"></div>
             </div>{" "}
           </Toolbar>
         </AppBar>
-        {cart && <Cart count={count} />}
+        {/* { cart ? (<div sx={{position:"absolute", width: "70px", float: "right"}}><Cart count={count} /></div>):null} */}
       </Box>
-
+      
+       { alert ? (<Alert  severity="success">Added to basket</Alert>):null}
       <main>
         {/* <Model open={open} setOpen={(word) => setOpen(word)} /> */}
         <DrawerMenu draw={draw} setDraw={(word) => setDraw(word)} />
@@ -215,7 +207,7 @@ export default function Album() {
               return (
                 <Grid item key={card} xs={12} sm={6} md={4}>
                   <Card
-                    key={card["Species Name"]}
+                    key={fish.indexOf(card)}
                     sx={{
                       height: "100%",
                       display: "flex",
@@ -225,7 +217,7 @@ export default function Album() {
                     <CardMedia
                       component="img"
                       sx={{
-                        pt: "0.%",
+                        pt: "0.%", "height": "50%"
                       }}
                       image={images[0].src}
                     />
@@ -262,20 +254,20 @@ export default function Album() {
                         cost={card.Calories}
                       />
 
-                      {/* <Button
-                        variant="contained"
-                        endIcon={<AddShoppingCartIcon />}
-                        sx={{
-                          "margin-left": "25px",
-                        }}
-                      >
-                        Add to Cart
-                      </Button> */}
                       <div className="cart">
                         <Button
+                         sx={{
+                          "margin-left": "12px",
+                        }}
                           variant="contained"
                           endIcon={<AddShoppingCartIcon />}
-                          onClick={Displaycart}
+                          onClick={()=>{Displaycart;   setAlert(true)
+                            setTimeout(() => {
+                              setAlert(false)
+                            }, "2000")
+                          }
+                          }
+                          
                         >
                           Add to cart
                         </Button>
