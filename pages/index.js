@@ -134,7 +134,7 @@ setBasket(prevBasket => {
       
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="fixed">
-          <Toolbar>
+          <Toolbar sx={{"background-color":"#1976D2"}}>
             <IconButton
               size="large"
               edge="start"
@@ -153,8 +153,8 @@ setBasket(prevBasket => {
               Rent a fish
             </Typography>
             <form onSubmit={handleSubmit}>
-              <Search>
-                <SearchIconWrapper>
+              <Search >
+                <SearchIconWrapper >
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
@@ -162,6 +162,7 @@ setBasket(prevBasket => {
                   inputProps={{ "aria-label": "search" }}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   value={searchTerm}
+                  
                 />
               </Search>
             </form>
