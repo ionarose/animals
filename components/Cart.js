@@ -105,7 +105,7 @@ return sum
           <Typography sx={{ p: 2, color: "text.secondary" }}>
             {basket.length < 1
               ? "Cart empty"
-              : `Shopping cart: ${basket.length + 1} fish`}
+              : `Shopping cart: ${basket.length } fish`}
           </Typography>
           <Typography sx={{ p: 2, color: "text.secondary", "margin-right": "30px" }}>Subtotal: £{total(basket)}</Typography></Box>
         </StyledBox>
