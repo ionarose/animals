@@ -105,7 +105,7 @@ return sum
           <Typography sx={{ p: 2, color: "text.secondary" }}>
             {basket.length < 1
               ? "Cart empty"
-              : `Shopping cart: ${basket.length + 1} items`}
+              : `Shopping cart: ${basket.length + 1} fish`}
           </Typography>
           <Typography sx={{ p: 2, color: "text.secondary", "margin-right": "30px" }}>Subtotal: £{total(basket)}</Typography></Box>
         </StyledBox>
@@ -126,14 +126,14 @@ return sum
             sx={{
               height: "100%",
               display: "flex",
-              flexDirection: "column",
+              width: "65%",
+              flexDirection: "row",
             }}
           >
+          
             <CardMedia
               component="img"
-              sx={{
-                pt: "0.%", "width": "26vw"
-              }}
+
               image={item.image}
             />
 
